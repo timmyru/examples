@@ -1,0 +1,57 @@
+body {
+    margin: 20px;
+}
+
+a {
+    text-decoration: none;
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -ms-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+}
+
+a:hover {
+    color: #dc3545;
+    text-decoration: none;
+}
+
+hr {
+    border-top: 3px solid rgba(0,0,0,.1)
+}
+
+.sort {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+footer {
+    text-align: center;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+.page {
+    margin: 5px;
+    font-size: 22px;
+}
+
+.active {
+    color: #dc3545;
+}
+
+.task-title {
+    margin-bottom: 25px;
+}
+
+.admin-buttons {
+    display: flex;
+}
+
+.admin-buttons form {
+    margin-right: 10px;
+}
