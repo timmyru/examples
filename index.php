@@ -1,9 +1,12 @@
 <?php
 
+//проверяем, есть ли в гет-запросе ключ text
 if (isset($_GET['text'])) {
+    //записываем строку, введенную пользователем, в переменную, затем избавляем ее от пробелов и заглавные буквы превращаем в строчные
     $text = $_GET['text'];
     $newText = str_replace(' ', '', mb_strtolower($text, 'utf-8'));
 
+    //функция, которая перебирает нашу строку и записывает в массив все комбинации букв, идущих подряд. Минимальная длина такой комбинации - три символа
     function explodeVars($text)
     {
         $vars = [];
@@ -18,6 +21,7 @@ if (isset($_GET['text'])) {
         return $vars;
     }
 
+    //функция, которая зеркально переворачивает наш текст
     function reverse($text)
     {
         $arr = [];
@@ -27,12 +31,13 @@ if (isset($_GET['text'])) {
         return implode($arr);
     }
 
+    //получаем все комбинации изначального и зеркального вариантов
     $varsBeforeReverse = explodeVars($newText);
     $varsAfterReverse = explodeVars(reverse($newText));
 
-    $match = [];
-    $longestMatch = $match[0];
 
+    //перебираем массивы, ищем совпадения, записываем совпадения в массив. Предварительно проверяем, является ли совпадение палиндромом с помощью функции reverse
+    $match = [];
     foreach ($varsBeforeReverse as $var) {
         if (in_array($var, $varsAfterReverse) &&
             $var == reverse($var)) {
@@ -40,12 +45,15 @@ if (isset($_GET['text'])) {
         }
     }
 
+    //ищем самое длинное совпадение, т.е. самый длинный подпалиндром
+    $longestMatch = $match[0];
     foreach ($match as $value) {
         if (mb_strlen($value) > mb_strlen($longestMatch)) {
             $longestMatch = $value;
         }
     }
 
+    //если палиндромов не найдено, то выводим первый символ, если самый длинный подпалиндром равен исходной строке, то выводим всю исходную строку, если нет - выводим этот подпалиндром
     if (!$longestMatch) {
         echo 'Палиндромов и подпалиндромов не найдено. Первый символ исходной строки: ' . mb_substr($text, 0, 1);
     } else if ($longestMatch == $newText) {
@@ -66,7 +74,16 @@ if (isset($_GET['text'])) {
     <title>Document</title>
 </head>
 <body>
-<form action="">
+<style>
+    body {
+        font-size: 25px;
+        font-family: Arial;
+    }
+    input {
+        padding: 10px;
+    }
+</style>
+<form action="index.php">
     <h2>Палиндром-проверка :)</h2>
     <input type="text" name="text" placeholder="Введите строку" style="width: 500px">
     <input type="submit">
