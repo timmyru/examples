@@ -20,14 +20,16 @@ if (isset($_GET['text'])) {
     if ($newText == reverse($newText)) {
         echo 'Строка является палиндромом, ура! ' . $text;
     } else {
-        //если нет, то создаем функцию, которая перебирает нашу строку и записывает в массив все комбинации букв, идущих подряд. Минимальная длина такой комбинации - три символа
+        //если нет, то создаем функцию, которая перебирает нашу строку и записывает в массив все подпалиндромы (сравниваем равна ли подстрока ее зеркальному отражению с помощью функции reverse). Минимальная длина - три символа
         function explodeVars($text)
         {
             $vars = [];
             for ($i = 0; $i < mb_strlen($text) - 2; $i++) {
                 for ($j = 1; $j <= mb_strlen($text); $j++) {
                     if (!in_array(mb_substr($text, $i, $j), $vars)
-                        && mb_strlen(mb_substr($text, $i, $j)) > 2) {
+                        && mb_strlen(mb_substr($text, $i, $j)) > 2
+                        && mb_substr($text, $i, $j)
+                        == reverse(mb_substr($text, $i, $j))) {
                         $vars[] = mb_substr($text, $i, $j);
                     }
                 }
@@ -35,19 +37,8 @@ if (isset($_GET['text'])) {
             return $vars;
         }
 
-        //получаем все комбинации изначального и зеркального вариантов
-        $varsBeforeReverse = explodeVars($newText);
-        $varsAfterReverse = explodeVars(reverse($newText));
-
-        //перебираем массивы, ищем совпадения, записываем совпадения в массив. Предварительно проверяем, является ли совпадение палиндромом с помощью функции reverse
-        $match = [];
-        foreach ($varsBeforeReverse as $var) {
-            if (in_array($var, $varsAfterReverse) &&
-                $var == reverse($var)) {
-                $match[] = $var;
-            }
-        }
-
+        // записываем результаты функции explodeVars в массив match
+        $match = explodeVars($newText);
         //ищем самое длинное совпадение, т.е. самый длинный подпалиндром
         $longestMatch = $match[0];
         foreach ($match as $value) {
